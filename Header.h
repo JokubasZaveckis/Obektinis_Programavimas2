@@ -1,9 +1,22 @@
+#pragma once
 #include <iostream>
 #include <iomanip>
 #include <string>
 #include <algorithm>
 #include <random>
 #include <vector>
+#include <fstream>
+#include <sstream>
+#include <cstdlib>
+#include <chrono>
+#include <list>
+#include <deque>
+#include <numeric>
+#include <iostream>
+#include <string>
+#include <cstdlib>
+#include <ctime>
+
 
 using std::cout;
 using std::cin;
@@ -16,3 +29,11 @@ using std::string;
 using std::copy;
 using std::vector;
 using std::fixed;
+using std::ifstream;
+using std::stoi;
+using std::getline;
+using std::cerr;
+using std::ofstream;
+using std::list;
+using std::deque;
+using std::sort;
