@@ -21,7 +21,7 @@ Programos versijoje 1.1 kode buvusi struktūra pakeista klase, ko pasakoje buvo 
 Sekantys tyrimai naudojant flag'us buvo atlikti tik klasę turinčiam kodui:
 
 O1:
-|          Veiksmas          |    100 000       |    1 000 000      |
+| Studentų skaičius:         |    100 000       |    1 000 000      |
 |----------------------------|------------------|-------------------|
 | Failo nuskaitymas          |     0.22s        |      2.36s        |
 | Failo rikiavimas           |     0.66s        |      7.93s        |
@@ -30,7 +30,7 @@ O1:
 | Programos veikimo laikas   |     1.23s        |      14.43s       |
 
 O2:
-|          Veiksmas          |    100 000       |    1 000 000      |
+| Studentų skaičius:         |    100 000       |    1 000 000      |
 |----------------------------|------------------|-------------------|
 | Failo nuskaitymas          |     0.24s        |      2.42s        |
 | Failo rikiavimas           |     0.61s        |      7.58s        |
@@ -39,7 +39,7 @@ O2:
 | Programos veikimo laikas   |     1.27s        |      14.14s       |
 
 O3:
-|          Veiksmas          |    100 000       |    1 000 000      |
+| Studentų skaičius:         |    100 000       |    1 000 000      |
 |----------------------------|------------------|-------------------|
 | Failo nuskaitymas          |     0.20s        |      2.27s        |
 | Failo rikiavimas           |     0.63s        |      7.43s        |
