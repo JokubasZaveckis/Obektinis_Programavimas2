@@ -1,13 +1,23 @@
 #include "Header.h"
 #include "Funkcijos.h"
 
-double Studentas::Vidurkis(vector<int> pazymiai, int egzaminas)
+
+std::ostream& operator<<(std::ostream& os, const Studentas& studentas)
+{
+	os << std::left << std::setw(13) << studentas.get_vardas()
+		<< std::left << std::setw(20) << studentas.get_pavarde()
+		<< std::left << std::setw(20) << studentas.get_vidurkis()
+		<< std::left << std::setw(20) << studentas.get_mediana();
+	return os;
+}
+
+double Vidurkis(vector<int> pazymiai, int egzaminas)
 {
 	double suma = accumulate(pazymiai.begin(), pazymiai.end(), 0);
 	return suma / pazymiai.size() * 0.6 + egzaminas * 0.4;
 }
 
-double Studentas::Mediana(vector<int> pazymiai, int egzaminas)
+double Mediana(vector<int> pazymiai, int egzaminas)
 {
 	int n = pazymiai.size();
 	sort(pazymiai.begin(), pazymiai.end());
@@ -116,7 +126,15 @@ void Skaitymas(vector <Studentas>& grupe, float& nuskaitymas)
 		egz = temp.get_pazymiai().back();
 		temp.set_egzaminas(egz);
 		temp.get_pazymiai().pop_back();
+
+		double avg = Vidurkis(temp.get_pazymiai(), temp.get_egzaminas());
+		temp.set_vidurkis(avg);
+
+		double med = Mediana(temp.get_pazymiai(), temp.get_egzaminas());
+		temp.set_mediana(med);
+
 		grupe.push_back(temp);
+
 	}
 	duomenys.close();
 	auto endSkaitymas = std::chrono::high_resolution_clock::now();
@@ -292,7 +310,7 @@ void IsvedimasIFaila(vector<Studentas> protingi, vector<Studentas> neprotingi, f
 	smart << "-----------------------------------------------------------------------------------" << endl;
 	for (auto& i : protingi)
 	{
-		smart << left << setw(13) << i.get_vardas() << setw(20) << i.get_pavarde() << setw(20) << fixed << setprecision(2) << i.get_vidurkis() << setw(20) << i.get_mediana() << endl;
+		smart << i << endl;
 	}
 
 	smart.close();
@@ -303,7 +321,7 @@ void IsvedimasIFaila(vector<Studentas> protingi, vector<Studentas> neprotingi, f
 	stupid << "-----------------------------------------------------------------------------------" << endl;
 	for (auto& i : neprotingi)
 	{
-		stupid << left << setw(13) << i.get_vardas() << setw(20) << i.get_pavarde() << setw(20) << fixed << setprecision(2) << i.get_vidurkis() << setw(20) << i.get_mediana() << endl;
+		stupid << i << endl;
 	}
 
 	auto endIsvedimas = std::chrono::high_resolution_clock::now();
