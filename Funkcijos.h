@@ -33,19 +33,16 @@ private:
 	double vidurkis_, mediana_;
 	vector<int> pazymiai_;
 
-	static double Vidurkis(vector<int> pazymiai, int egzaminas);
-	static double Mediana(vector<int> pazymiai, int egzaminas);
-
 public:
 	Studentas() : vardas_(""), pavarde_(""), egzaminas_(0), vidurkis_(0), mediana_(0), pazymiai_(vector<int>(0, 0)) {}
-	Studentas(string vardas, string pavarde, vector<int>& pazymiai, int egzaminas)
+	Studentas(string vardas, string pavarde, vector<int>& pazymiai, int egzaminas, int vidurkis, int mediana)
 	{
 		vardas_ = vardas;
 		pavarde_ = pavarde;
 		pazymiai_ = pazymiai;
 		egzaminas_ = egzaminas;
-		vidurkis_ = Vidurkis(pazymiai, egzaminas);
-		mediana_ = Mediana(pazymiai, egzaminas);
+		vidurkis_ = vidurkis;
+		mediana_ = mediana;
 	}
 
 	// Getters
@@ -63,6 +60,50 @@ public:
 	void set_vidurkis(double vidurkis) { vidurkis_ = vidurkis; }
 	void set_mediana(double mediana) { mediana_ = mediana; }
 
+	//copy constructor
+	Studentas(const Studentas& other)
+		: vardas_(other.vardas_), pavarde_(other.pavarde_), egzaminas_(other.egzaminas_),
+		vidurkis_(other.vidurkis_), mediana_(other.mediana_), pazymiai_(other.pazymiai_)
+	{}
+
+	//copy assigment operator
+	Studentas& operator=(const Studentas& other)
+	{
+		if (this != &other) {
+			vardas_ = other.vardas_;
+			pavarde_ = other.pavarde_;
+			egzaminas_ = other.egzaminas_;
+			vidurkis_ = other.vidurkis_;
+			mediana_ = other.mediana_;
+			pazymiai_ = other.pazymiai_;
+		}
+		return *this;
+	}
+
+	//copy constructor
+	Studentas(Studentas&& other) noexcept
+		: vardas_(std::move(other.vardas_)), pavarde_(std::move(other.pavarde_)), egzaminas_(other.egzaminas_),
+		vidurkis_(other.vidurkis_), mediana_(other.mediana_), pazymiai_(std::move(other.pazymiai_))
+	{
+	}
+
+	//copy assigment operator
+	Studentas& operator=(Studentas&& other) noexcept
+	{
+		if (this != &other) {
+			vardas_ = std::move(other.vardas_);
+			pavarde_ = std::move(other.pavarde_);
+			egzaminas_ = other.egzaminas_;
+			vidurkis_ = other.vidurkis_;
+			mediana_ = other.mediana_;
+			pazymiai_ = std::move(other.pazymiai_);
+		}
+		return *this;
+	}
+
+
+	friend std::ostream& operator<<(std::ostream& os, const Studentas& studentas);
+
 	~Studentas() {
 		pazymiai_.clear();
 	}
@@ -75,3 +116,5 @@ void IsvedimasIFaila(vector<Studentas> protingi, vector<Studentas> neprotingi, f
 void FailoSukurimas(vector <Studentas>&, int failoDydis, int pazymiuSkaicius);
 bool Palyginimas1(const Studentas a, Studentas b);
 void KitiSkaiciavimai(vector <Studentas>& grupe, string strategija);
+double Vidurkis(vector<int> pazymiai, int egzaminas);
+double Mediana(vector<int> pazymiai, int egzaminas);
