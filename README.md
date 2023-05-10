@@ -1,1 +1,1 @@
-# Objektinis_Programavimas
+Programa patobulinta pagrindinę klasę studentas išskaidant į bazinę ir derived klasę. Bazinė klasė yra abstrakčioji, t.y. negalima sukurti žmogaus tipo objektų, o tik objektus gautus iš jos išvestinių klasių.
