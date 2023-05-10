@@ -26,95 +26,155 @@ const string PAVARDES[100] = {
 	"Rimsa", "Rupsys", "Rusinas", "Rutkauskas", "Ruzgys", "Sabaliauskas", "Sabonis", "Sakalauskas", "Samsonas", "Savickas" //10
 };
 
-class Studentas {
-private:
-	string vardas_, pavarde_;
-	int egzaminas_;
-	double vidurkis_, mediana_;
-	vector<int> pazymiai_;
+class Zmogus {
+protected:
+	std::string vardas_;
+	std::string pavarde_;
 
 public:
-	Studentas() : vardas_(""), pavarde_(""), egzaminas_(0), vidurkis_(0), mediana_(0), pazymiai_(vector<int>(0, 0)) {}
-	Studentas(string vardas, string pavarde, vector<int>& pazymiai, int egzaminas, int vidurkis, int mediana)
-	{
-		vardas_ = vardas;
-		pavarde_ = pavarde;
-		pazymiai_ = pazymiai;
-		egzaminas_ = egzaminas;
-		vidurkis_ = vidurkis;
-		mediana_ = mediana;
-	}
 
-	// Getters
-	string get_vardas() const { return vardas_; }
-	string get_pavarde() const { return pavarde_; }
-	vector<int> get_pazymiai() const { return pazymiai_; }
-	int get_egzaminas() const { return egzaminas_; }
-	double get_vidurkis() const { return vidurkis_; }
-	double get_mediana() const { return mediana_; }
-	//Setters
-	void set_vardas(string vardas) { vardas_ = vardas; }
-	void set_pavarde(string pavarde) { pavarde_ = pavarde; }
-	void set_pazymiai(vector<int>& pazymiai) { pazymiai_ = pazymiai; }
-	void set_egzaminas(int egzaminas) { egzaminas_ = egzaminas; }
-	void set_vidurkis(double vidurkis) { vidurkis_ = vidurkis; }
-	void set_mediana(double mediana) { mediana_ = mediana; }
+	Zmogus() : vardas_(""), pavarde_("") {}
 
-	//copy constructor
-	Studentas(const Studentas& other)
-		: vardas_(other.vardas_), pavarde_(other.pavarde_), egzaminas_(other.egzaminas_),
-		vidurkis_(other.vidurkis_), mediana_(other.mediana_), pazymiai_(other.pazymiai_)
-	{}
+    string getVardas() const { return vardas_; }
+    string getPavarde() const { return pavarde_; }
 
-	//copy assigment operator
-	Studentas& operator=(const Studentas& other)
-	{
-		if (this != &other) {
-			vardas_ = other.vardas_;
-			pavarde_ = other.pavarde_;
-			egzaminas_ = other.egzaminas_;
-			vidurkis_ = other.vidurkis_;
-			mediana_ = other.mediana_;
-			pazymiai_ = other.pazymiai_;
-		}
-		return *this;
-	}
+    virtual void setVardas(string& vardas) = 0;
+    virtual void setPavarde(string& pavarde) = 0;
 
-	//copy constructor
-	Studentas(Studentas&& other) noexcept
-		: vardas_(std::move(other.vardas_)), pavarde_(std::move(other.pavarde_)), egzaminas_(other.egzaminas_),
-		vidurkis_(other.vidurkis_), mediana_(other.mediana_), pazymiai_(std::move(other.pazymiai_))
-	{
-	}
+    virtual ~Zmogus() {}
+};
 
-	//copy assigment operator
-	Studentas& operator=(Studentas&& other) noexcept
-	{
-		if (this != &other) {
-			vardas_ = std::move(other.vardas_);
-			pavarde_ = std::move(other.pavarde_);
-			egzaminas_ = other.egzaminas_;
-			vidurkis_ = other.vidurkis_;
-			mediana_ = other.mediana_;
-			pazymiai_ = std::move(other.pazymiai_);
-		}
-		return *this;
-	}
+class Studentas : public Zmogus {
+private:
+    int egzaminas_;
+    double vidurkis_;
+    double mediana_;
+    vector<int> pazymiai_;
 
+public:
+    Studentas() : egzaminas_(0), vidurkis_(0), mediana_(0) {}
 
-	friend std::ostream& operator<<(std::ostream& os, const Studentas& studentas);
+    Studentas(string vardas, string pavarde, vector<int>& pazymiai, int egzaminas) {
+        vardas_ = vardas;
+        pavarde_ = pavarde;
+        Vidurkis(pazymiai, egzaminas);
+        Mediana(pazymiai, egzaminas);
+        pazymiai.clear();
+    }
 
-	~Studentas() {
-		pazymiai_.clear();
-	}
+     // Copy constructor
+    Studentas(const Studentas& other)
+        : Zmogus(other), egzaminas_(other.egzaminas_), vidurkis_(other.vidurkis_), mediana_(other.mediana_), pazymiai_(other.pazymiai_) {}
+
+    // Copy assignment operator
+    Studentas& operator=(const Studentas& other) {
+        if (this != &other) {
+            Zmogus::operator=(other);
+            egzaminas_ = other.egzaminas_;
+            vidurkis_ = other.vidurkis_;
+            mediana_ = other.mediana_;
+            pazymiai_ = other.pazymiai_;
+        }
+        return *this;
+    }
+
+    // Move constructor
+    Studentas(Studentas&& other) noexcept
+        : Zmogus(std::move(other)), egzaminas_(other.egzaminas_), vidurkis_(other.vidurkis_), mediana_(other.mediana_), pazymiai_(std::move(other.pazymiai_)) {}
+
+    // Move assignment operator
+    Studentas& operator=(Studentas&& other) noexcept {
+        if (this != &other) {
+            Zmogus::operator=(std::move(other));
+            egzaminas_ = other.egzaminas_;
+            vidurkis_ = other.vidurkis_;
+            mediana_ = other.mediana_;
+            pazymiai_ = std::move(other.pazymiai_);
+        }
+        return *this;
+    }
+
+    // Getters
+    string getVardas() const { return vardas_; }
+    string getPavarde() const { return pavarde_; }
+    int get_egzaminas() const { return egzaminas_; }
+    double get_vidurkis() const { return vidurkis_; }
+    double get_mediana() const { return mediana_; }
+    vector<int> get_pazymiai() const { return pazymiai_; }
+
+    // Setters
+    void setVardas(std::string& vardas) override {
+        vardas_ = vardas;
+    }
+
+    void setPavarde(std::string& pavarde) override {
+        pavarde_ = pavarde;
+    }
+    //void setVardas(std::string vardas) { vardas_ = vardas; }
+    //void setPavarde(std::string pavarde) { pavarde_ = pavarde; }
+    void set_egzaminas(int egzaminas) { egzaminas_ = egzaminas; }
+    void set_vidurkis(double vidurkis) { vidurkis_ = vidurkis; }
+    void set_mediana(double mediana) { mediana_ = mediana; }
+    void set_pazymiai(const vector<int>& pazymiai) { pazymiai_ = pazymiai; }
+
+    void Vidurkis(vector<int> pazymiai, int egzaminas)
+    {
+        double suma = accumulate(pazymiai.begin(), pazymiai.end(), 0);
+        vidurkis_ =  suma / pazymiai.size() * 0.6 + egzaminas * 0.4;
+    }
+
+    void Mediana(vector<int> pazymiai, int egzaminas)
+    {
+        int n = pazymiai.size();
+        sort(pazymiai.begin(), pazymiai.end());
+        double mediana;
+        if (n % 2 == 0)
+        {
+            mediana = (pazymiai[n / 2 - 1] + pazymiai[n / 2]) / 2.0;
+        }
+        else
+        {
+            mediana = pazymiai[n / 2];
+        }
+        mediana_ =  mediana * 0.4 + egzaminas * 0.6;
+    }
+
+    friend std::ostream& operator<<(std::ostream& os, const Studentas& studentas);
+
+    friend istream& operator>>(istream& duomenys, vector<Studentas>& group) {
+        string vardas, pavarde, line;
+        vector<int> pazVec;
+        int pazymys;
+
+        getline(duomenys, line);
+        if (duomenys.fail()) {
+            return duomenys;
+        }
+        stringstream ss(line);
+
+        ss >> vardas >> pavarde;
+
+        while (ss >> pazymys) {
+            pazVec.push_back(pazymys);
+        }
+
+        int egzaminas = pazVec.back();
+        pazVec.pop_back();
+
+        group.emplace_back(vardas, pavarde, pazVec, egzaminas);
+
+        return duomenys;
+    }
+
+    ~Studentas() {
+        pazymiai_.clear();
+    }
 };
 
 void Skaitymas(vector <Studentas>& grupe, float& nuskaitymas);
 void Pildymas(Studentas& temp);
-bool Palyginimas(const Studentas a, Studentas b);
+bool Palyginimas(const Studentas& a, Studentas& b);
 void IsvedimasIFaila(vector<Studentas> protingi, vector<Studentas> neprotingi, float& isvedimas);
 void FailoSukurimas(vector <Studentas>&, int failoDydis, int pazymiuSkaicius);
-bool Palyginimas1(const Studentas a, Studentas b);
+bool Palyginimas1(const Studentas& a, Studentas& b);
 void KitiSkaiciavimai(vector <Studentas>& grupe, string strategija);
-double Vidurkis(vector<int> pazymiai, int egzaminas);
-double Mediana(vector<int> pazymiai, int egzaminas);

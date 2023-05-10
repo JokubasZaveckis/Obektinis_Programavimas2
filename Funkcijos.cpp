@@ -4,33 +4,11 @@
 
 std::ostream& operator<<(std::ostream& os, const Studentas& studentas)
 {
-	os << std::left << std::setw(13) << studentas.get_vardas()
-		<< std::left << std::setw(20) << studentas.get_pavarde()
+	os << std::left << std::setw(13) << studentas.getVardas()
+		<< std::left << std::setw(20) << studentas.getPavarde()
 		<< std::left << std::setw(20) << studentas.get_vidurkis()
 		<< std::left << std::setw(20) << studentas.get_mediana();
 	return os;
-}
-
-double Vidurkis(vector<int> pazymiai, int egzaminas)
-{
-	double suma = accumulate(pazymiai.begin(), pazymiai.end(), 0);
-	return suma / pazymiai.size() * 0.6 + egzaminas * 0.4;
-}
-
-double Mediana(vector<int> pazymiai, int egzaminas)
-{
-	int n = pazymiai.size();
-	sort(pazymiai.begin(), pazymiai.end());
-	double mediana;
-	if (n % 2 == 0)
-	{
-		mediana = (pazymiai[n / 2 - 1] + pazymiai[n / 2]) / 2.0;
-	}
-	else
-	{
-		mediana = pazymiai[n / 2];
-	}
-	return mediana * 0.4 + egzaminas * 0.6;
 }
 
 
@@ -104,39 +82,12 @@ void Skaitymas(vector <Studentas>& grupe, float& nuskaitymas)
 		}
 	}
 	auto startNuskaitymas = std::chrono::high_resolution_clock::now();
-	string pirmaEilute;
-	getline(duomenys, pirmaEilute);
 
 	string line;
-	while (getline(duomenys, line)) {
-		Studentas temp;
-		std::istringstream ss(line);
-		string vardas, pavarde;
-		ss >> vardas >> pavarde;
-		temp.set_vardas(vardas);
-		temp.set_pavarde(pavarde);
-		int pazymys;
-		vector<int> pazymiai;
-		while (ss >> pazymys)
-		{
-			pazymiai.push_back(pazymys);
-		}
-		temp.set_pazymiai(pazymiai);
-		int egz;
-		egz = temp.get_pazymiai().back();
-		temp.set_egzaminas(egz);
-		temp.get_pazymiai().pop_back();
+	getline(duomenys, line);
 
-		double avg = Vidurkis(temp.get_pazymiai(), temp.get_egzaminas());
-		temp.set_vidurkis(avg);
-
-		double med = Mediana(temp.get_pazymiai(), temp.get_egzaminas());
-		temp.set_mediana(med);
-
-		grupe.push_back(temp);
-
-	}
-	duomenys.close();
+	while (duomenys >> grupe) {}
+	
 	auto endSkaitymas = std::chrono::high_resolution_clock::now();
 	auto skaitymas = std::chrono::duration_cast<std::chrono::milliseconds>(endSkaitymas - startNuskaitymas).count();
 	nuskaitymas = skaitymas;
@@ -161,7 +112,7 @@ void KitiSkaiciavimai(vector <Studentas>& grupe, string strategija)
 	auto start = std::chrono::high_resolution_clock::now();
 
 	auto startRikiavimas = std::chrono::high_resolution_clock::now();
-	std::sort(grupe.begin(), grupe.end(), Palyginimas1);
+	sort(grupe.begin(), grupe.end(), Palyginimas1);
 	auto endRikiavimas = std::chrono::high_resolution_clock::now();
 	auto Rikiavimas = std::chrono::duration_cast<std::chrono::milliseconds>(endRikiavimas - startRikiavimas).count();
 	cout << "Failo rikiavimas truko " << fixed << setprecision(2) << static_cast<double>(Rikiavimas) / 1000 << "s" << endl;
@@ -214,12 +165,12 @@ void KitiSkaiciavimai(vector <Studentas>& grupe, string strategija)
 	std::cout << "Programos trukme: " << fixed << setprecision(2) << static_cast<double>(Rikiavimas + rusiavimas + nuskaitymas + isvedimas) / 1000 << "s" << endl;
 }
 
-bool Palyginimas(const Studentas a, Studentas b)
+bool Palyginimas(const Studentas& a, Studentas& b)
 {
-	return a.get_vardas() < b.get_pavarde();
+	return a.getVardas() < b.getPavarde();
 }
 
-bool Palyginimas1(const Studentas a, Studentas b)
+bool Palyginimas1(const Studentas& a, Studentas& b)
 {
 	return a.get_vidurkis() < b.get_vidurkis();
 }
@@ -229,8 +180,8 @@ void Pildymas(Studentas& temp)
 	cout << "Iveskite studento varda ir pavarde:" << endl;
 	string vardas, pavarde;
 	cin >> vardas >> pavarde;
-	temp.set_vardas(vardas);
-	temp.set_pavarde(pavarde);
+	temp.setVardas(vardas);
+	temp.setPavarde(pavarde);
 
 	int pasirinkimas = 0;
 	while (pasirinkimas != 1 && pasirinkimas != 2 && pasirinkimas != 3)
