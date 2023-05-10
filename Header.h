@@ -37,3 +37,6 @@ using std::ofstream;
 using std::list;
 using std::deque;
 using std::sort;
+using std::istream;
+using std::ostream;
+using std::stringstream;
